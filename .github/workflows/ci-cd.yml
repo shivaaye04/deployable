@@ -28,9 +28,11 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/MLops-app:latest
 
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v3
-
-    - name: Deploy to K3s
-      run: |
-        kubectl --kubeconfig/etc/rancher/k3s/k3s.yaml apply -f k8s/
+    - name: Deploy to AWS via SSH
+      uses: appleboy/ssh-action@v0.1.6
+      with : 
+      host: ${{secrets.EC2_HOST}}
+      username: ${{secrets.EC2_USER}}
+      key: ${{secrets.SSH_PRIVATE_KEY}}
+      script: |
+      kubectl apply -f K8S/

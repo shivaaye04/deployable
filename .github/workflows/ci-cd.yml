@@ -28,8 +28,7 @@ jobs:
     context: .                       
     push: true                        
     tags: ${{ secrets.DOCKER_USERNAME }}/MLops-app:latest
-
-- name: Deploy to AWS via SSH
+    - name: Deploy to AWS via SSH
   uses: appleboy/ssh-action@v0.1.6
   with:
     host: ${{ secrets.EC2_HOST }}

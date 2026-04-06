@@ -34,4 +34,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: kubectl apply -f ./k8s/
+        script: |
+          git clone https://github.com/shivaaye04/shivaaye_deployable.git
+          cd shivaaye_depoyable
+          kubectl apply -f k8s/

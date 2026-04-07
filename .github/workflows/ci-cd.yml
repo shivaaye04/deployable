@@ -28,13 +28,14 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/mlops-app:latest
 
-    - name: Deploy to AWS via SSH
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          git clone https://github.com/shivaaye04/shivaaye_deployable.git
-          cd shivaaye_depoyable
-          kubectl apply -f k8s/
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Configure kubeconfig
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+
+    - name: Deploy to K3S
+      run: |
+        kubectl apply -f k8s/
